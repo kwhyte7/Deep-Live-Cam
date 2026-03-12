@@ -2,11 +2,15 @@ name: deep-live-cam
 
 services:
   main:
+    container_name: deep-live-cam-container
     build: .
     working_dir: /app/
     volumes:
       - .:/app/
-    command: python3 gpu_support.py
+      - /dev/video0:/dev/video0
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./models:/app/models
+    command: python3 run.py
     deploy:
       resources:
         reservations:
@@ -14,6 +18,8 @@ services:
             - driver: nvidia
               count: 1 # alternatively, use `count: all` for all GPUs
               capabilities: [gpu]
+    #  environment:
+    #    - "DISPLAY=:0"
     #depends_on:
     #  - cuda
     #  - python
