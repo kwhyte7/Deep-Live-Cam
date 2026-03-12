@@ -13,6 +13,7 @@ tf_env/
 
 plan.md
 faces/*
+**.insightface/*
 
 .tmp/
 temp/

@@ -7,10 +7,15 @@ services:
     working_dir: /app/
     volumes:
       - .:/app/
-      - /dev/video0:/dev/video0
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ./models:/app/models
-    command: python3 run.py
+      - ~/.Xauthority:/root/.Xauthority
+      - ./faces/:/app/faces
+      - ./.insightface/models:/root/.insightface/models
+    devices:
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
+    command: python3 run.py --execution-provider cuda
     deploy:
       resources:
         reservations:
@@ -18,9 +23,10 @@ services:
             - driver: nvidia
               count: 1 # alternatively, use `count: all` for all GPUs
               capabilities: [gpu]
-    #  environment:
-    #    - "DISPLAY=:0"
-    #depends_on:
+    environment:
+      - XAUTHORITY=/mnt/c/Users/YourUser/.Xauthority
+      - DISPLAY=:0
+      #depends_on:
     #  - cuda
     #  - python
 

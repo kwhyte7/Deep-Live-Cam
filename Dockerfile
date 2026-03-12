@@ -18,7 +18,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu/ focal-proposed focal-updates foc
 COPY requirements.txt .
 
 RUN apt update
-RUN apt install python3-tk -y
+RUN apt install python3-tk ffmpeg -y
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -27,4 +27,4 @@ COPY . .
 
 ENV DISPLAY=localhost:0
 
-CMD ["python3", "run.py"]
+CMD ["python3", "run.py --execution-provider cuda"]
