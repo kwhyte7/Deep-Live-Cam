@@ -1,0 +1,20 @@
+name: deep-live-cam
+
+services:
+  main:
+    build: .
+    working_dir: /app/
+    volumes:
+      - .:/app/
+    command: python3 gpu_support.py
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]
+    #depends_on:
+    #  - cuda
+    #  - python
+
